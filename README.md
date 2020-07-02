@@ -5,6 +5,9 @@
 - Micro serviço de envio de email (já criado)!!!
 - Linguagem Golang
 
+# Logins e senhas padroes
+- Mysql: Usuario: root   password: 123456
+- RabbitMQ: Usuario: user  password: bitnami
 
 # Fluxo
 

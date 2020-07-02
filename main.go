@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"log"
 
 	"github.com/chapzin/login-microservice/db"
@@ -19,12 +20,13 @@ func main() {
 
 	conn := db.Connect()
 
-	user := domain.User{
-		Email:           "chapzin@gmail.com",
-		Password:        "123456",
-		PasswordConfirm: "123555",
-	}
+	user := domain.User{}
 
-	user.Register(conn)
+	userok, err := user.Register("12345678", "12345678", conn)
+
+	if err != nil {
+		fmt.Println(err)
+	}
+	fmt.Printf("Usuario: %+v", userok)
 
 }

@@ -1,0 +1,18 @@
+version: '3'
+
+services:
+  mysqlsrv:
+    image: mysql:5.7
+    environment:
+      MYSQL_ROOT_PASSWORD: "123456"
+      MYSQL_DATABASE: "micro-login"
+    ports:
+      - "3306:3306"
+    volumes:
+      - /home/chapzin/volumes/mysql:/var/lib/mysql
+  rabit:
+    image: bitnami/rabbitmq
+    ports:
+      - '15672:15672'
+    volumes:
+      - /home/chapzin/volumes/rabbitmq:/bitnami
