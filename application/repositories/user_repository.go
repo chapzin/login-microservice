@@ -19,6 +19,10 @@ type UserRepositoryDb struct {
 	Db *gorm.DB
 }
 
+func NewUserRepositoryDb(db *gorm.DB) *UserRepositoryDb {
+	return &UserRepositoryDb{Db: db}
+}
+
 func (userRepo *UserRepositoryDb) GetUserByEmail(email string) (*domain.User, error) {
 	var user domain.User
 	err := userRepo.Db.Where("email=?", email).First(&user).Error
@@ -33,7 +37,7 @@ func (userRepo *UserRepositoryDb) GetUserByEmail(email string) (*domain.User, er
 func (userRepo *UserRepositoryDb) Register(email string, password string, confirm_pwd string) (*domain.User, error) {
 
 	user, err := userRepo.GetUserByEmail(email)
-	if user.ID != 0 {
+	if user != nil {
 		return nil, fmt.Errorf("Email já cadastrado")
 	}
 

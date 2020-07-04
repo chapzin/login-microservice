@@ -1,4 +1,4 @@
-package db
+package framework
 
 import (
 	"log"
@@ -35,6 +35,22 @@ func NewDbTest() *gorm.DB {
 	conn, err := dbInstance.Connect()
 	if err != nil {
 		log.Fatalf("Erro ao conectar ao db test: %v", err)
+	}
+
+	return conn
+}
+
+func NewDbProduction() *gorm.DB {
+	dbInstace := NewDb()
+	dbInstace.Env = "production"
+	dbInstace.DbType = "mysql"
+	dbInstace.Dsn = "root:123456@(localhost:3306)/micro-login?charset=utf8&parseTime=True&loc=Local"
+	dbInstace.AutoMigrateDb = true
+	dbInstace.Debug = true
+
+	conn, err := dbInstace.Connect()
+	if err != nil {
+		log.Fatalf("Erro ao conectar ao db mysql: %v", err)
 	}
 
 	return conn
