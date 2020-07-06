@@ -5,14 +5,15 @@ import (
 	"time"
 
 	"github.com/chapzin/login-microservice/domain"
+	"github.com/chapzin/login-microservice/framework"
 	"github.com/jinzhu/gorm"
 	uuid "github.com/satori/go.uuid"
-	"golang.org/x/crypto/bcrypt"
 )
 
 type UserRepository interface {
 	Register(email string, password string, password_cofirm string) (*domain.User, error)
 	GetUserByEmail(email string) (*domain.User, error)
+	GetUsers() []domain.User
 }
 
 type UserRepositoryDb struct {
@@ -41,7 +42,7 @@ func (userRepo *UserRepositoryDb) Register(email string, password string, confir
 		return nil, fmt.Errorf("Email já cadastrado")
 	}
 
-	passHash, err := hashPassword(password, confirm_pwd)
+	passHash, err := framework.HashPassword(password, confirm_pwd)
 
 	if err != nil {
 		return nil, err
@@ -59,13 +60,8 @@ func (userRepo *UserRepositoryDb) Register(email string, password string, confir
 
 }
 
-func hashPassword(password, password_confirm string) (string, error) {
-	if password != password_confirm {
-		return "", fmt.Errorf("Senha diferente da confirmação")
-	}
-	pwdHash, err := bcrypt.GenerateFromPassword([]byte(password), bcrypt.DefaultCost)
-	if err != nil {
-		return "", err
-	}
-	return string(pwdHash), nil
+func (userRepo *UserRepositoryDb) GetUsers() []domain.User {
+	var users []domain.User
+	userRepo.Db.Order("id asc").Find(&users)
+	return users
 }

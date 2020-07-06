@@ -61,3 +61,29 @@ func TestEmailRegistered(t *testing.T) {
 	require.Error(t, err)
 	require.Nil(t, user2)
 }
+
+func TestGetUsers(t *testing.T) {
+	db := framework.NewDbTest()
+	defer db.Close()
+
+	repo := NewUserRepositoryDb(db)
+	user, err := repo.Register("chapzin@gmail.com", "123456", "123456")
+	require.Nil(t, err)
+	require.NotNil(t, user)
+
+	user2, err := repo.Register("chapzin2@gmail.com", "456789", "456789")
+	require.Nil(t, err)
+	require.NotNil(t, user2)
+	cont := 0
+	users := repo.GetUsers()
+	require.NotNil(t, users)
+
+	for _, u := range users {
+		if u.ID != 0 {
+			cont++
+		}
+	}
+
+	require.Equal(t, cont, 2)
+
+}

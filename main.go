@@ -19,7 +19,6 @@ func init() {
 func main() {
 	db := framework.NewDbProduction()
 	defer db.Close()
-
 	repo := repositories.NewUserRepositoryDb(db)
 	user, err := repo.Register("chapzin@gmail.com", "123456", "123456")
 
