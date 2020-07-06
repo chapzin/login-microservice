@@ -4,6 +4,7 @@ import (
 	"log"
 
 	"github.com/chapzin/login-microservice/domain"
+	"github.com/gin-gonic/gin"
 	"github.com/jinzhu/gorm"
 	_ "github.com/jinzhu/gorm/dialects/mysql"
 	_ "github.com/jinzhu/gorm/dialects/sqlite"
@@ -22,6 +23,10 @@ type Database struct {
 
 func NewDb() *Database {
 	return &Database{}
+}
+
+func DBInstance(c *gin.Context) *gorm.DB {
+	return c.MustGet("DB").(*gorm.DB)
 }
 
 func NewDbTest() *gorm.DB {
