@@ -7,20 +7,20 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-func TestNewUserRepositoryDBInsert(t *testing.T) {
+func TestNewUserRegister(t *testing.T) {
 	db := framework.NewDbTest()
 	defer db.Close()
 
 	repo := NewUserRepositoryDb(db)
 	user, err := repo.Register("chapzin@gmail.com", "123456", "123456")
 
-	require.NotEmpty(t, user.ID)
+	require.NotNil(t, user)
 	require.Nil(t, err)
-	require.Equal(t, user.Email, "chapzin@gmail.com")
+	require.Equal(t, "chapzin@gmail.com", user.Email)
 
 }
 
-func TestNewUserRepositoryDBInsertPassword(t *testing.T) {
+func TestNewUserInsertPassword(t *testing.T) {
 	db := framework.NewDbTest()
 	defer db.Close()
 
@@ -41,6 +41,7 @@ func TestGetUserByEmail(t *testing.T) {
 	require.NotNil(t, user)
 
 	getUser, err := repo.GetUserByEmail("chapzin@gmail.com")
+	require.NotNil(t, getUser)
 	require.Nil(t, err)
 	require.Equal(t, getUser.Email, "chapzin@gmail.com")
 	require.NotNil(t, getUser.ID)
@@ -84,6 +85,6 @@ func TestGetUsers(t *testing.T) {
 		}
 	}
 
-	require.Equal(t, cont, 2)
+	require.Equal(t, 2, cont)
 
 }

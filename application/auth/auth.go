@@ -15,7 +15,7 @@ func SignIn(email string, password string) (string, error) {
 	if err != nil {
 		return "", err
 	}
-	if user.ID == 0 {
+	if user == nil {
 		return "", fmt.Errorf("email ou senha está errado")
 	}
 
